@@ -16,7 +16,7 @@
       .pipe(gulp.dest('dist'));
   });
 
-  gulp.task('build', function() {
+  gulp.task('build', ['scripts'], function() {
     return gulp.src(['src/angular-mapbox.module.js', 'src/**/*.js'])
       .pipe(concat('angular-mapbox.min.js'))
       .pipe(ngmin())

@@ -7,12 +7,10 @@
     return {
       restrict: 'E',
       transclude: true,
-      scope: {
-        leafletMapOptions: '='
-      },
+      scope: true,
       replace: true,
       link: function(scope, element, attrs) {
-        scope.map = L.mapbox.map(element[0], attrs.mapId, scope.leafletMapOptions);
+        scope.map = L.mapbox.map(element[0], attrs.mapId, $parse(attrs.leafletMapOptions));
         _mapboxMap.resolve(scope.map);
         var mapOptions = {
           clusterMarkers: attrs.clusterMarkers !== undefined,
@@ -56,26 +54,29 @@
           scope.map.setView([attrs.lat, attrs.lng], scope.zoom);
         }
 
-        if(scope.onReposition) {
+        if(attrs.onReposition) {
+          var repositionFn = $parse(attrs.onReposition, null, true);
           scope.map.on('dragend', function(event) {
             scope.$apply(function() {
-              scope.onReposition(scope, {$event:event});
+              repositionFn(scope, {$event:event});
             });
           });
         }
 
-        if(scope.onZoom) {
+        if(attrs.onZoom) {
+          var zoomFn = $parse(attrs.onZoom, null, true);
           scope.map.on('zoomend', function(event) {
             scope.$apply(function() {
-              scope.onZoom(scope, {$event:event});
+              zoomFn(scope, {$event:event});
             });
-          })
+          });
         }
 
-        if(scope.onClick) {
+        if(attrs.onClick) {
+          var clickFn = $parse(attrs.onClick, null, true);
           scope.map.on('click', function(event) {
             scope.$apply(function() {
-              scope.onClick(scope, {$event:event});
+              clickFn(scope, {$event:event});
             });
           });
         }
