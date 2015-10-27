@@ -56,29 +56,26 @@
           scope.map.setView([attrs.lat, attrs.lng], scope.zoom);
         }
 
-        if(attrs.onReposition) {
-          var repositionFn = $parse(attrs.onReposition, null, true);
+        if(scope.onReposition) {
           scope.map.on('dragend', function(event) {
             scope.$apply(function() {
-              repositionFn(scope, {$event:event});
+              scope.onReposition(scope, {$event:event});
             });
           });
         }
 
-        if(attrs.onZoom) {
-          var zoomFn = $parse(attrs.onZoom, null, true);
+        if(scope.onZoom) {
           scope.map.on('zoomend', function(event) {
             scope.$apply(function() {
-              zoomFn(scope, {$event:event});
+              scope.onZoom(scope, {$event:event});
             });
-          });
+          })
         }
 
-        if(attrs.onClick) {
-          var clickFn = $parse(attrs.onClick, null, true);
+        if(scope.onClick) {
           scope.map.on('click', function(event) {
             scope.$apply(function() {
-              clickFn(scope, {$event:event});
+              scope.onClick(scope, {$event:event});
             });
           });
         }
