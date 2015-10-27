@@ -286,7 +286,9 @@
     return {
       restrict: 'E',
       transclude: true,
-      scope: true,
+      scope: {
+        mapOptions: '='
+      },
       replace: true,
       link: function(scope, element, attrs) {
         scope.map = L.mapbox.map(element[0], attrs.mapId);
