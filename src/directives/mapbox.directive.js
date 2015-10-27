@@ -15,7 +15,7 @@
         scope.map = L.mapbox.map(element[0], attrs.mapId);
         _mapboxMap.resolve(scope.map);
 
-        var mapOptions = attrs.mapOptions || {
+        var mapOptions = scope.mapOptions || {
           clusterMarkers: attrs.clusterMarkers !== undefined,
           scaleToFit: attrs.scaleToFit !== undefined,
           scaleToFitAll: attrs.scaleToFit === 'all'
