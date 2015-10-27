@@ -289,7 +289,7 @@
       scope: true,
       replace: true,
       link: function(scope, element, attrs) {
-        scope.map = L.mapbox.map(element[0], attrs.mapId, $parse(scope.leafletMapOptions)(scope));
+        scope.map = L.mapbox.map(element[0], attrs.mapId, $parse(attrs.leafletMapOptions)(scope));
         _mapboxMap.resolve(scope.map);
         var mapOptions = {
           clusterMarkers: attrs.clusterMarkers !== undefined,
