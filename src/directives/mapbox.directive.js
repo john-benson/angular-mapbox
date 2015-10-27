@@ -12,11 +12,13 @@
       link: function(scope, element, attrs) {
         scope.map = L.mapbox.map(element[0], attrs.mapId);
         _mapboxMap.resolve(scope.map);
-        var mapOptions = {
+
+        var mapOptions = attrs.mapOptions || {
           clusterMarkers: attrs.clusterMarkers !== undefined,
           scaleToFit: attrs.scaleToFit !== undefined,
           scaleToFitAll: attrs.scaleToFit === 'all'
         };
+
         mapboxService.addMapInstance(scope.map, mapOptions);
 
         if (attrs.dragging === 'false') {
