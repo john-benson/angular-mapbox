@@ -12,14 +12,15 @@
       },
       replace: true,
       link: function(scope, element, attrs) {
-        scope.map = L.mapbox.map(element[0], attrs.mapId);
-        _mapboxMap.resolve(scope.map);
 
         var mapOptions = scope.mapOptions || {
           clusterMarkers: attrs.clusterMarkers !== undefined,
           scaleToFit: attrs.scaleToFit !== undefined,
           scaleToFitAll: attrs.scaleToFit === 'all'
         };
+
+        scope.map = L.mapbox.map(element[0], attrs.mapId, mapOptions);
+        _mapboxMap.resolve(scope.map);
 
         mapboxService.addMapInstance(scope.map, mapOptions);
 
