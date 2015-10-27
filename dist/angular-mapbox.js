@@ -286,10 +286,15 @@
     return {
       restrict: 'E',
       transclude: true,
-      scope: true,
+      scope: {
+        leafletMapOptions: '=',
+        onZoom: '&',
+        onClick: '&',
+        onResposition: '&'
+      },
       replace: true,
       link: function(scope, element, attrs) {
-        scope.map = L.mapbox.map(element[0], attrs.mapId, $parse(attrs.leafletMapOptions));
+        scope.map = L.mapbox.map(element[0], attrs.mapId, scope.leafletMapOptions);
         _mapboxMap.resolve(scope.map);
         var mapOptions = {
           clusterMarkers: attrs.clusterMarkers !== undefined,
