@@ -32,13 +32,12 @@
       removeMarker: removeMarker,
       fitMapToMarkers: fitMapToMarkers,
       getOptionsForMap: getOptionsForMap,
-      mapLoaded: mapLoaded
+      mapLoaded: _deferred.promise.then(function (e) {
+                    return e.target;
+                  })
     };
     return service;
-
-    function mapLoaded() {
-      return _deferred;
-    }
+ 
 
     function init(opts) {
       opts = opts || {};
