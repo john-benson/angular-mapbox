@@ -10,10 +10,11 @@
 
   angular.module('angular-mapbox').service('mapboxService', mapboxService);
 
-  function mapboxService() {
+  function mapboxService($q) {
     var _mapInstances = [],
         _markers = [],
-        _mapOptions = [];
+        _mapOptions = [],
+        _deferred = $q.defer();
 
     var fitMapToMarkers = debounce(function() {
       // TODO: refactor
@@ -30,9 +31,14 @@
       addMarker: addMarker,
       removeMarker: removeMarker,
       fitMapToMarkers: fitMapToMarkers,
-      getOptionsForMap: getOptionsForMap
+      getOptionsForMap: getOptionsForMap,
+      mapLoaded: mapLoaded
     };
     return service;
+
+    function mapLoaded() {
+      return _deferred;
+    }
 
     function init(opts) {
       opts = opts || {};
@@ -41,6 +47,10 @@
 
     function addMapInstance(map, mapOptions) {
       mapOptions = mapOptions || {};
+
+      map.on('load', function (mapInstance){
+        _deferred.resolve(mapInstance);
+      });
 
       _mapInstances.push(map);
       _mapOptions.push(mapOptions);
@@ -291,11 +301,13 @@
       link: function(scope, element, attrs) {
         scope.map = L.mapbox.map(element[0], attrs.mapId, $parse(attrs.leafletMapOptions)(scope));
         _mapboxMap.resolve(scope.map);
+
         var mapOptions = {
           clusterMarkers: attrs.clusterMarkers !== undefined,
           scaleToFit: attrs.scaleToFit !== undefined,
           scaleToFitAll: attrs.scaleToFit === 'all'
         };
+        
         mapboxService.addMapInstance(scope.map, mapOptions);
 
         if (attrs.dragging === 'false') {
